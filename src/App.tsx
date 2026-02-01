@@ -114,16 +114,16 @@ function AppContent() {
             {/* 语言切换按钮 */}
             <Button
               type="text"
-              size={window.innerWidth < 768 ? 'middle' : 'large'}
+              size="small"
               onClick={changeLanguage}
               disabled={langChanging}
               style={{
                 color: 'white',
                 display: 'flex',
                 alignItems: 'center',
-                gap: window.innerWidth < 768 ? '6px' : '8px',
-                padding: window.innerWidth < 768 ? '4px 12px' : '6px 16px',
-                borderRadius: '20px',
+                gap: window.innerWidth < 768 ? '4px' : '6px',
+                padding: window.innerWidth < 768 ? '2px 8px' : '4px 12px',
+                borderRadius: '16px',
                 background: langChanging ? 'rgba(24, 144, 255, 0.3)' : 'rgba(255,255,255,0.1)',
                 transition: 'all 0.3s ease',
                 fontWeight: 500,
@@ -131,7 +131,8 @@ function AppContent() {
                 outline: 'none',
                 cursor: langChanging ? 'default' : 'pointer',
                 opacity: langChanging ? 0.8 : 1,
-                height: window.innerWidth < 768 ? '36px' : 'auto'
+                height: window.innerWidth < 768 ? '28px' : '32px',
+                fontSize: window.innerWidth < 768 ? '12px' : '13px'
               }}
               onMouseEnter={(e) => {
                 if (!langChanging) {
@@ -151,8 +152,8 @@ function AppContent() {
               }}
             >
               <svg
-                width={window.innerWidth < 768 ? 20 : 24}
-                height={window.innerWidth < 768 ? 13 : 16}
+                width={window.innerWidth < 768 ? 16 : 20}
+                height={window.innerWidth < 768 ? 11 : 13}
                 viewBox="0 0 24 16"
                 style={{ display: 'block', borderRadius: '2px' }}
               >
@@ -176,7 +177,7 @@ function AppContent() {
                   </>
                 )}
               </svg>
-              <span style={{ fontSize: window.innerWidth < 768 ? '13px' : '14px', display: window.innerWidth < 576 ? 'none' : 'inline' }}>
+              <span style={{ fontSize: window.innerWidth < 768 ? '12px' : '13px', display: window.innerWidth < 576 ? 'none' : 'inline' }}>
                 {i18n.language === 'zh' ? '中文' : 'EN'}
               </span>
             </Button>

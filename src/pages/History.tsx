@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
-import { Card, DatePicker, Row, Col, Tag, Space, Alert, Empty, Typography, Progress } from 'antd';
-import { CalendarOutlined, FireOutlined, BulbOutlined, BarChartOutlined, CheckCircleOutlined, WarningOutlined } from '@ant-design/icons';
+import { Card, DatePicker, Row, Col, Tag, Alert, Empty, Typography, Progress, Spin } from 'antd';
+import { CalendarOutlined, FireOutlined, BulbOutlined, BarChartOutlined, CheckCircleOutlined, WarningOutlined, FileTextOutlined, StarOutlined, CommentOutlined } from '@ant-design/icons';
 import { useTranslation } from 'react-i18next';
 import { fetchHistoryReports, fetchReportByDate } from '../lib/api';
 import CoolLoading from '../components/CoolLoading';
@@ -22,7 +22,7 @@ const getLocalizedField = <T extends Record<string, any>>(
   return item[field as keyof T] as string;
 };
 
-// Emoji 图标转换函数
+// 图标转换函数
 const getVerifiedIcon = (verified: string) => {
   if (verified.includes('✅')) {
     return <CheckCircleOutlined style={{ color: '#52c41a', marginRight: '4px' }} />;
@@ -41,6 +41,7 @@ const History: React.FC = () => {
   const { t, i18n } = useTranslation();
   const currentLanguage = i18n.language;
   const [loading, setLoading] = useState(true);
+  const [reportLoading, setReportLoading] = useState(false);
   const [dates, setDates] = useState<string[]>([]);
   const [selectedReport, setSelectedReport] = useState<DailyReport | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -55,7 +56,7 @@ const History: React.FC = () => {
       const history = await fetchHistoryReports();
       setDates(history);
     } catch (err) {
-      setError('Failed to load history');
+      setError(t('home.refreshError'));
     } finally {
       setLoading(false);
     }
@@ -64,6 +65,7 @@ const History: React.FC = () => {
   const handleDateSelect = async (date: dayjs.Dayjs | null) => {
     if (!date) return;
 
+    setReportLoading(true);
     setError(null);
     try {
       const dateStr = date.format('YYYY-MM-DD');
@@ -75,7 +77,9 @@ const History: React.FC = () => {
         setSelectedReport(null);
       }
     } catch (err) {
-      setError('Failed to load report');
+      setError(t('home.refreshError'));
+    } finally {
+      setReportLoading(false);
     }
   };
 
@@ -93,7 +97,7 @@ const History: React.FC = () => {
           {t('history.title')}
         </Title>
         <Paragraph type="secondary" style={{ fontSize: '16px', marginBottom: '24px' }}>
-          {t('history.selectDate')}，探索 AI Agents 的历史讨论话题
+          {t('history.selectDate')}
         </Paragraph>
 
         <Card
@@ -105,10 +109,7 @@ const History: React.FC = () => {
         >
           <DatePicker
             style={{
-              width: '100%',
-              height: '48px',
-              borderRadius: '8px',
-              fontSize: '16px'
+              width: '100%'
             }}
             size="large"
             placeholder={t('history.selectDate')}
@@ -118,6 +119,7 @@ const History: React.FC = () => {
             }}
             format="YYYY-MM-DD"
             showToday={false}
+            suffixIcon={reportLoading ? <Spin size="small" /> : undefined}
           />
         </Card>
       </div>
@@ -133,7 +135,22 @@ const History: React.FC = () => {
         />
       )}
 
-      {selectedReport && (
+      {reportLoading && !selectedReport ? (
+        <Card
+          style={{
+            borderRadius: '12px',
+            boxShadow: '0 2px 8px rgba(0,0,0,0.06)',
+            border: '1px solid #f0f0f0',
+            textAlign: 'center',
+            padding: '60px 24px'
+          }}
+        >
+          <Spin size="large" />
+          <div style={{ marginTop: '16px', color: '#8c8c8c' }}>
+            {currentLanguage === 'zh' ? '正在加载报告...' : 'Loading report...'}
+          </div>
+        </Card>
+      ) : selectedReport ? (
         <>
           {/* 统计卡片 */}
           <Row gutter={[16, 16]} style={{ marginBottom: '32px' }}>
@@ -142,15 +159,15 @@ const History: React.FC = () => {
                 style={{
                   borderRadius: '12px',
                   boxShadow: '0 2px 8px rgba(0,0,0,0.06)',
-                  border: '1px solid #f0f0f0',
-                  background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)'
+                  border: '1px solid #f0f0f0'
                 }}
               >
-                <div style={{ textAlign: 'center', color: '#fff' }}>
-                  <Title level={3} style={{ color: '#fff', marginBottom: '8px' }}>
+                <div style={{ textAlign: 'center', padding: '16px 8px' }}>
+                  <FileTextOutlined style={{ fontSize: '32px', color: '#1890ff', marginBottom: '12px' }} />
+                  <Title level={3} style={{ color: '#262626', marginBottom: '8px' }}>
                     {selectedReport.stats.totalPosts}
                   </Title>
-                  <Text style={{ color: 'rgba(255,255,255,0.9)', fontSize: '14px' }}>
+                  <Text type="secondary" style={{ fontSize: '14px' }}>
                     {t('home.totalPosts')}
                   </Text>
                 </div>
@@ -161,15 +178,15 @@ const History: React.FC = () => {
                 style={{
                   borderRadius: '12px',
                   boxShadow: '0 2px 8px rgba(0,0,0,0.06)',
-                  border: '1px solid #f0f0f0',
-                  background: 'linear-gradient(135deg, #f093fb 0%, #f5576c 100%)'
+                  border: '1px solid #f0f0f0'
                 }}
               >
-                <div style={{ textAlign: 'center', color: '#fff' }}>
-                  <Title level={3} style={{ color: '#fff', marginBottom: '8px' }}>
+                <div style={{ textAlign: 'center', padding: '16px 8px' }}>
+                  <StarOutlined style={{ fontSize: '32px', color: '#faad14', marginBottom: '12px' }} />
+                  <Title level={3} style={{ color: '#262626', marginBottom: '8px' }}>
                     {selectedReport.stats.highValuePosts}
                   </Title>
-                  <Text style={{ color: 'rgba(255,255,255,0.9)', fontSize: '14px' }}>
+                  <Text type="secondary" style={{ fontSize: '14px' }}>
                     {t('home.highValuePosts')}
                   </Text>
                 </div>
@@ -180,15 +197,15 @@ const History: React.FC = () => {
                 style={{
                   borderRadius: '12px',
                   boxShadow: '0 2px 8px rgba(0,0,0,0.06)',
-                  border: '1px solid #f0f0f0',
-                  background: 'linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)'
+                  border: '1px solid #f0f0f0'
                 }}
               >
-                <div style={{ textAlign: 'center', color: '#fff' }}>
-                  <Title level={3} style={{ color: '#fff', marginBottom: '8px' }}>
+                <div style={{ textAlign: 'center', padding: '16px 8px' }}>
+                  <CommentOutlined style={{ fontSize: '32px', color: '#52c41a', marginBottom: '12px' }} />
+                  <Title level={3} style={{ color: '#262626', marginBottom: '8px' }}>
                     {selectedReport.stats.totalComments}
                   </Title>
-                  <Text style={{ color: 'rgba(255,255,255,0.9)', fontSize: '14px' }}>
+                  <Text type="secondary" style={{ fontSize: '14px' }}>
                     {t('home.totalComments')}
                   </Text>
                 </div>
@@ -200,8 +217,11 @@ const History: React.FC = () => {
           <div style={{ marginBottom: '24px' }}>
             <Title level={3} style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
               <BarChartOutlined style={{ color: '#52c41a' }} />
-              {selectedReport.date} - {t('home.title')}
+              {selectedReport.date}
             </Title>
+            <Paragraph type="secondary" style={{ fontSize: '14px', marginTop: '8px', marginLeft: '36px' }}>
+              {t('home.title')}
+            </Paragraph>
           </div>
 
           {/* 话题卡片列表 */}
@@ -328,9 +348,7 @@ const History: React.FC = () => {
             ))}
           </Row>
         </>
-      )}
-
-      {!selectedReport && !error && (
+      ) : (
         <Card
           style={{
             borderRadius: '12px',
@@ -344,7 +362,7 @@ const History: React.FC = () => {
             image={Empty.PRESENTED_IMAGE_SIMPLE}
             description={
               <span style={{ fontSize: '16px', color: '#8c8c8c' }}>
-                请选择日期查看历史报告
+                {t('history.selectDate')}
               </span>
             }
           />
