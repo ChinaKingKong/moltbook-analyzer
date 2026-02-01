@@ -40,7 +40,7 @@ const Trends: React.FC = () => {
   const [loading, setLoading] = useState(true);
   const [trendData, setTrendData] = useState<TrendData[]>([]);
   const [error, setError] = useState<string | null>(null);
-  const currentLanguage = i18n.language;
+  const currentLanguage = (i18n.language || '').startsWith('zh') ? 'zh' : 'en';
 
   useEffect(() => {
     loadTrendData();
@@ -172,7 +172,10 @@ const Trends: React.FC = () => {
                     borderRadius: '8px',
                     boxShadow: '0 2px 8px rgba(0,0,0,0.15)'
                   }}
-                  formatter={(value: any, name: string) => [value, getLocalizedTopicName(name, currentLanguage)]}
+                  formatter={(value, name) => [
+                    value,
+                    getLocalizedTopicName(String(name ?? ''), currentLanguage)
+                  ] as [any, string]}
                 />
                 <Legend formatter={(value: string) => getLocalizedTopicName(value, currentLanguage)} />
                 {currentTopics.map((topic, index) => (
@@ -219,7 +222,10 @@ const Trends: React.FC = () => {
                     borderRadius: '8px',
                     boxShadow: '0 2px 8px rgba(0,0,0,0.15)'
                   }}
-                  formatter={(value: any, name: string) => [value, getLocalizedTopicName(name, currentLanguage)]}
+                  formatter={(value, name) => [
+                    value,
+                    getLocalizedTopicName(String(name ?? ''), currentLanguage)
+                  ] as [any, string]}
                 />
                 <Legend formatter={(value: string) => getLocalizedTopicName(value, currentLanguage)} />
                 {currentTopics.map((topic, index) => (

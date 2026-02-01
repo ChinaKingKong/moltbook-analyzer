@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Card, Row, Col, Typography, Progress, Tag, Space, Button, Alert, Divider } from 'antd';
-import { ReloadOutlined, FireOutlined, BulbOutlined, BarChartOutlined, LinkOutlined, CheckCircleOutlined, WarningOutlined, RiseOutlined, ArrowRightOutlined, RocketOutlined, FileTextOutlined, StarOutlined, CommentOutlined } from '@ant-design/icons';
+import { ReloadOutlined, FireOutlined, BulbOutlined, BarChartOutlined, LinkOutlined, CheckCircleOutlined, WarningOutlined, FileTextOutlined, StarOutlined, CommentOutlined } from '@ant-design/icons';
 import { useTranslation } from 'react-i18next';
 import { fetchLatestReport, triggerCrawl } from '../lib/api';
 import CoolLoading from '../components/CoolLoading';
@@ -32,14 +32,6 @@ const getVerifiedIcon = (verified: string) => {
   return null;
 };
 
-const getTrendIcon = (trend: string) => {
-  if (trend === '🔥') return <FireOutlined style={{ color: '#ff4d4f' }} />;
-  if (trend === '📈') return <RiseOutlined style={{ color: '#52c41a' }} />;
-  if (trend === '➡️') return <ArrowRightOutlined style={{ color: '#8c8c8c' }} />;
-  if (trend === '🚀') return <RocketOutlined style={{ color: '#722ed1' }} />;
-  return trend;
-};
-
 const getVerifiedText = (verified: string) => {
   return verified.replace(/[✅⚠️🚀]/g, '').trim();
 };
@@ -50,7 +42,7 @@ const Home: React.FC = () => {
   const [refreshing, setRefreshing] = useState(false);
   const [report, setReport] = useState<DailyReport | null>(null);
   const [error, setError] = useState<string | null>(null);
-  const currentLanguage = i18n.language;
+  const currentLanguage = (i18n.language || '').startsWith('zh') ? 'zh' : 'en';
 
   const loadData = async () => {
     setLoading(true);
@@ -60,10 +52,10 @@ const Home: React.FC = () => {
       if (data) {
         setReport(data);
       } else {
-        setError('No data available');
+        setError(t('home.noData'));
       }
     } catch (err) {
-      setError('Failed to load data');
+      setError(t('home.error'));
     } finally {
       setLoading(false);
     }
@@ -109,19 +101,19 @@ const Home: React.FC = () => {
 
   // 初始加载时显示全屏loading
   if (loading) {
-    return <CoolLoading visible={true} text={currentLanguage === 'zh' ? '正在加载数据...' : 'Loading Data...'} />;
+    return <CoolLoading visible={true} text={t('home.loading')} />;
   }
 
   if (error || !report || !report.stats) {
     return (
       <Alert
         message={t('home.error')}
-        description={error || 'No data available'}
+        description={error || t('home.noData')}
         type="error"
         showIcon
         action={
           <Button type="primary" onClick={loadData}>
-            Retry
+            {t('home.retry')}
           </Button>
         }
       />
@@ -135,7 +127,7 @@ const Home: React.FC = () => {
           <Title level={2}>{t('home.title')}</Title>
           <Paragraph type="secondary">{t('home.subtitle')}</Paragraph>
           <Paragraph type="secondary">
-            {t('home.lastUpdate', { date: new Date(report.timestamp).toLocaleString() })}
+            {t('home.lastUpdate', { date: new Date(report.timestamp).toLocaleString(currentLanguage === 'zh' ? 'zh-CN' : 'en-US') })}
           </Paragraph>
         </div>
         <Button
@@ -376,7 +368,7 @@ const Home: React.FC = () => {
       </Card>
 
       {/* 全屏遮罩Loading */}
-      <CoolLoading visible={refreshing} text={currentLanguage === 'zh' ? '正在刷新数据...' : 'Refreshing Data...'} />
+      <CoolLoading visible={refreshing} text={t('home.refreshingData')} />
     </div>
   );
 };

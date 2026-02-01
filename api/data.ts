@@ -1,30 +1,5 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
-
-// 模拟的 Vercel KV 客户端
-class MockKV {
-  private data: Map<string, any> = new Map();
-
-  async get(key: string): Promise<any> {
-    return this.data.get(key);
-  }
-
-  async set(key: string, value: any): Promise<void> {
-    this.data.set(key, value);
-  }
-
-  async lrange(key: string, start: number, stop: number): Promise<any[]> {
-    const list = this.data.get(key) || [];
-    return list.slice(start, stop === -1 ? undefined : stop + 1);
-  }
-
-  async lpush(key: string, value: any): Promise<void> {
-    const list = this.data.get(key) || [];
-    list.unshift(value);
-    this.data.set(key, list);
-  }
-}
-
-const kv = new MockKV();
+import { getKv, getMockKv } from './kv.js';
 
 // 生成模拟报告数据
 function generateMockReport() {
@@ -165,10 +140,10 @@ function generateMockReport() {
 }
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
-  // CORS 头
   res.setHeader('Access-Control-Allow-Credentials', 'true');
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'GET,OPTIONS,PATCH,DELETE,POST,PUT');
+  res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate');
 
   if (req.method === 'OPTIONS') {
     return res.status(200).end();
@@ -176,30 +151,33 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
   const { date, type } = req.query;
 
+  let kv: Awaited<ReturnType<typeof getKv>>;
+  try {
+    kv = await getKv();
+  } catch (err) {
+    console.warn('getKv failed, using mock data:', err);
+    kv = getMockKv();
+  }
+
   try {
     if (req.method === 'GET') {
       if (type === 'latest' || !date) {
-        // 获取最新报告
         const latestDate = new Date().toISOString().split('T')[0];
         let report = await kv.get(`report:${latestDate}`);
-
         if (!report) {
           report = generateMockReport();
-          await kv.set(`report:${latestDate}`, report);
+          try {
+            await kv.set(`report:${latestDate}`, report);
+          } catch {
+            // ignore
+          }
         }
-
         return res.status(200).json(report);
       } else if (date) {
-        // 获取指定日期的报告
         const report = await kv.get(`report:${date}`);
-
-        if (report) {
-          return res.status(200).json(report);
-        } else {
-          return res.status(404).json({ error: 'Report not found' });
-        }
+        if (report) return res.status(200).json(report);
+        return res.status(404).json({ error: 'Report not found' });
       } else if (type === 'history') {
-        // 获取历史报告列表
         const dates = [];
         for (let i = 0; i < 7; i++) {
           const d = new Date();
@@ -209,10 +187,9 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         return res.status(200).json(dates);
       }
     }
-
     return res.status(405).json({ error: 'Method not allowed' });
   } catch (error) {
-    console.error('API Error:', error);
-    return res.status(500).json({ error: 'Internal server error' });
+    console.error('API Error, returning mock:', error);
+    return res.status(200).json(generateMockReport());
   }
 }

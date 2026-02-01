@@ -20,9 +20,11 @@ function AppContent() {
   const location = useLocation();
   const [langChanging, setLangChanging] = useState(false);
 
+  const isZh = (i18n.language || '').startsWith('zh');
+
   const changeLanguage = async () => {
     setLangChanging(true);
-    const newLang = i18n.language === 'zh' ? 'en' : 'zh';
+    const newLang = isZh ? 'en' : 'zh';
 
     // 添加延迟以显示loading动画
     await new Promise(resolve => setTimeout(resolve, 1000));
@@ -54,7 +56,7 @@ function AppContent() {
   ];
 
   return (
-    <ConfigProvider locale={i18n.language === 'zh' ? zhCN : enUS}>
+    <ConfigProvider locale={isZh ? zhCN : enUS}>
       <Layout style={{ height: '100vh', display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
         <Header style={{
           display: 'flex',
@@ -157,7 +159,7 @@ function AppContent() {
                 viewBox="0 0 24 16"
                 style={{ display: 'block', borderRadius: '2px' }}
               >
-                {i18n.language === 'zh' ? (
+                {isZh ? (
                   // 中国国旗
                   <>
                     <rect width="24" height="16" fill="#de2910"/>
@@ -178,7 +180,7 @@ function AppContent() {
                 )}
               </svg>
               <span style={{ fontSize: window.innerWidth < 768 ? '12px' : '13px', display: window.innerWidth < 576 ? 'none' : 'inline' }}>
-                {i18n.language === 'zh' ? '中文' : 'EN'}
+                {t(isZh ? 'app.langZh' : 'app.langEn')}
               </span>
             </Button>
           </Space>
@@ -213,7 +215,7 @@ function AppContent() {
         </Footer>
 
         {/* 全屏遮罩Loading */}
-        <CoolLoading visible={langChanging} text={i18n.language === 'zh' ? '正在切换语言...' : 'Switching Language...'} />
+        <CoolLoading visible={langChanging} text={t('app.switchingLanguage')} />
       </Layout>
     </ConfigProvider>
   );

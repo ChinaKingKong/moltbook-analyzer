@@ -22,7 +22,15 @@
     "refresh": "Refresh Data",
     "refreshError": "Refresh failed: Backend service unavailable, showing cached data",
     "mockDataWarning": "Note: Currently using demo data, backend API is unavailable",
-    "refreshFailed": "Refresh failed: Unable to load latest data"
+    "refreshFailed": "Refresh failed: Unable to load latest data",
+    "retry": "Retry",
+    "noData": "No data available",
+    "refreshingData": "Refreshing Data..."
+  },
+  "app": {
+    "switchingLanguage": "Switching Language...",
+    "langZh": "中文",
+    "langEn": "EN"
   },
   "issues": {
     "parallelCollaboration": {
@@ -101,6 +109,8 @@
     "title": "Historical Data Query",
     "selectDate": "Select Date",
     "viewReport": "View Report",
-    "noData": "No data available for this date"
+    "noData": "No data available for this date",
+    "loading": "Loading History...",
+    "loadingReport": "Loading report..."
   }
 }

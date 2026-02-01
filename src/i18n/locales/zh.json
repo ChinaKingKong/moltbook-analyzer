@@ -22,7 +22,15 @@
     "refresh": "刷新数据",
     "refreshError": "刷新失败：后端服务不可用，当前显示的是缓存数据",
     "mockDataWarning": "注意：当前使用演示数据，后端API不可用",
-    "refreshFailed": "刷新失败：无法加载最新数据"
+    "refreshFailed": "刷新失败：无法加载最新数据",
+    "retry": "重试",
+    "noData": "暂无数据",
+    "refreshingData": "正在刷新数据..."
+  },
+  "app": {
+    "switchingLanguage": "正在切换语言...",
+    "langZh": "中文",
+    "langEn": "EN"
   },
   "issues": {
     "parallelCollaboration": {
@@ -101,6 +109,8 @@
     "title": "历史数据查询",
     "selectDate": "选择日期",
     "viewReport": "查看报告",
-    "noData": "该日期暂无数据"
+    "noData": "该日期暂无数据",
+    "loading": "正在加载历史数据...",
+    "loadingReport": "正在加载报告..."
   }
 }

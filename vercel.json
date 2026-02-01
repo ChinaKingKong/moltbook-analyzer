@@ -33,7 +33,5 @@
       "schedule": "0 2 * * *"
     }
   ],
-  "env": {
-    "KV_URL": "@kv_url"
-  }
+  "env": {}
 }

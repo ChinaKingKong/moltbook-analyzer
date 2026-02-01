@@ -39,7 +39,7 @@ const getVerifiedText = (verified: string) => {
 
 const History: React.FC = () => {
   const { t, i18n } = useTranslation();
-  const currentLanguage = i18n.language;
+  const currentLanguage = (i18n.language || '').startsWith('zh') ? 'zh' : 'en';
   const [loading, setLoading] = useState(true);
   const [reportLoading, setReportLoading] = useState(false);
   const [dates, setDates] = useState<string[]>([]);
@@ -85,7 +85,7 @@ const History: React.FC = () => {
 
   // 初始加载时显示全屏loading
   if (loading) {
-    return <CoolLoading visible={true} text={currentLanguage === 'zh' ? '正在加载历史数据...' : 'Loading History...'} />;
+    return <CoolLoading visible={true} text={t('history.loading')} />;
   }
 
   return (
@@ -147,7 +147,7 @@ const History: React.FC = () => {
         >
           <Spin size="large" />
           <div style={{ marginTop: '16px', color: '#8c8c8c' }}>
-            {currentLanguage === 'zh' ? '正在加载报告...' : 'Loading report...'}
+            {t('history.loadingReport')}
           </div>
         </Card>
       ) : selectedReport ? (

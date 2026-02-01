@@ -12,14 +12,17 @@ i18n
       en: { translation: en },
       zh: { translation: zh }
     },
+    lng: 'en',
     fallbackLng: 'en',
+    supportedLngs: ['en', 'zh'],
     debug: false,
     interpolation: {
       escapeValue: false
     },
     detection: {
-      order: ['localStorage', 'navigator'],
-      caches: ['localStorage']
+      order: ['localStorage'],
+      caches: ['localStorage'],
+      lookupLocalStorage: 'language'
     }
   });
 
