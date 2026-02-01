@@ -163,30 +163,48 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
   try {
     if (req.method === 'GET') {
+      // 历史日期列表：从 Redis 读取，爬虫每小时 lpush 写入
+      if (type === 'history') {
+        const dates = await kv.lrange('history', 0, 99);
+        if (Array.isArray(dates) && dates.length > 0) {
+          return res.status(200).json(dates);
+        }
+        const fallback = [];
+        for (let i = 0; i < 7; i++) {
+          const d = new Date();
+          d.setDate(d.getDate() - i);
+          fallback.push(d.toISOString().split('T')[0]);
+        }
+        return res.status(200).json(fallback);
+      }
+
+      // 按日期查询：report:YYYY-MM-DD
+      if (date && type !== 'latest') {
+        const report = await kv.get(`report:${date}`);
+        if (report) return res.status(200).json(report);
+        return res.status(404).json({ error: 'Report not found' });
+      }
+
+      // 最新报告：优先 report:latest（爬虫每小时更新），否则用 history[0] 再取 report:date
       if (type === 'latest' || !date) {
-        const latestDate = new Date().toISOString().split('T')[0];
-        let report = await kv.get(`report:${latestDate}`);
+        let report = await kv.get('report:latest');
+        if (!report) {
+          const latestDates = await kv.lrange('history', 0, 0);
+          const latestDate = latestDates?.[0] ?? new Date().toISOString().split('T')[0];
+          report = await kv.get(`report:${latestDate}`);
+        }
         if (!report) {
           report = generateMockReport();
           try {
-            await kv.set(`report:${latestDate}`, report);
+            const today = new Date().toISOString().split('T')[0];
+            await kv.set(`report:${today}`, report);
+            await kv.set('report:latest', report);
+            await kv.lpush('history', today);
           } catch {
             // ignore
           }
         }
         return res.status(200).json(report);
-      } else if (date) {
-        const report = await kv.get(`report:${date}`);
-        if (report) return res.status(200).json(report);
-        return res.status(404).json({ error: 'Report not found' });
-      } else if (type === 'history') {
-        const dates = [];
-        for (let i = 0; i < 7; i++) {
-          const d = new Date();
-          d.setDate(d.getDate() - i);
-          dates.push(d.toISOString().split('T')[0]);
-        }
-        return res.status(200).json(dates);
       }
     }
     return res.status(405).json({ error: 'Method not allowed' });

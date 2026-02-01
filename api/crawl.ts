@@ -1,5 +1,5 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
-import { getKv, getMockKv } from './kv.js';
+import { getKv, getMockKv, pruneOldestWeekIfNeeded } from './kv.js';
 
 /**
  * 抓取 Moltbook 数据并生成报告（内部动态加载 crawler 避免 Vercel 冷启动失败）
@@ -11,15 +11,33 @@ async function crawlMoltbook(): Promise<ReturnType<typeof generateReportFromTopi
     const mod = await import('./crawler-puppeteer.js');
     const result = await mod.crawlMoltbookData();
 
-    if (result.success && result.topics && result.topics.length > 0) {
-      console.log('✅ Real crawl successful!');
-      return generateReportFromTopics(result.topics, result.posts || []);
+    if (result.success && result.posts && result.posts.length > 0) {
+      console.log('✅ Real crawl successful!', result.posts.length, 'posts');
+      const topics = result.topics && result.topics.length > 0
+        ? result.topics
+        : postsToMinimalTopics(result.posts);
+      return generateReportFromTopics(topics, result.posts);
     }
     return await getMockReportFromModule(mod);
   } catch (error) {
     console.error('❌ Crawl error, falling back to mock data:', error);
     return await getMockReportSafe();
   }
+}
+
+/** 无主题时用帖子生成简易 topics（标题 + 热度） */
+function postsToMinimalTopics(posts: { id: string; title: string; votes: number; comments: number; url: string }[]) {
+  return posts.slice(0, 20).map((p, i) => ({
+    id: p.id,
+    title: p.title || 'Post',
+    heat: Math.min(100, (p.votes || 0) * 5 + (p.comments || 0) * 2),
+    heatDisplay: `${Math.min(100, (p.votes || 0) * 5 + (p.comments || 0) * 2)}%`,
+    description: '',
+    solution: '',
+    verified: '⚠️ From feed',
+    posts: [p.id],
+    url: p.url
+  }));
 }
 
 async function getMockReportFromModule(mod: { generateFullMockData: () => any[] }) {
@@ -162,7 +180,9 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
       try {
         await kv.set(`report:${date}`, report);
+        await kv.set('report:latest', report);
         await kv.lpush('history', date);
+        await pruneOldestWeekIfNeeded(kv);
       } catch (storeErr) {
         console.warn('KV set failed, response still OK:', storeErr);
       }
@@ -174,10 +194,26 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       try {
         const report = await getMockReportSafe();
         const date = new Date().toISOString().split('T')[0];
+        try {
+          await kv.set(`report:${date}`, report);
+          await kv.set('report:latest', report);
+          await kv.lpush('history', date);
+          await pruneOldestWeekIfNeeded(kv);
+        } catch {
+          // ignore
+        }
         return res.status(200).json({ success: true, date, report });
       } catch (e) {
         const report = minimalFallbackReport();
         const date = new Date().toISOString().split('T')[0];
+        try {
+          await kv.set(`report:${date}`, report);
+          await kv.set('report:latest', report);
+          await kv.lpush('history', date);
+          await pruneOldestWeekIfNeeded(kv);
+        } catch {
+          // ignore
+        }
         return res.status(200).json({ success: true, date, report });
       }
     }
