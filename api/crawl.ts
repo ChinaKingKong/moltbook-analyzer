@@ -143,7 +143,9 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
   // 同时接受 POST 和 GET，避免 Vercel/重定向 将 POST 转为 GET 导致 405
   if (req.method === 'POST' || req.method === 'GET') {
-    res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate');
+    res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate, max-age=0, private');
+    res.setHeader('Pragma', 'no-cache');
+    res.setHeader('Expires', '0');
 
     let kv;
     try {

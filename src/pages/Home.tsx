@@ -65,14 +65,19 @@ const Home: React.FC = () => {
     setRefreshing(true);
     setError(null);
     try {
-      // 先尝试触发爬取
-      const crawlResult = await triggerCrawl();
+      // 先尝试触发爬取（带 cache-busting 避免 304）
+      const crawlResult = await triggerCrawl({ noCache: true });
 
       // 等待一小段时间让后端处理爬取请求
       await new Promise(resolve => setTimeout(resolve, 500));
 
-      // 重新加载数据
-      await loadData();
+      // 重新加载数据（带 cache-busting 避免 304）
+      const data = await fetchLatestReport({ noCache: true });
+      if (data) {
+        setReport(data);
+      } else {
+        setError(t('home.noData'));
+      }
 
       // 如果使用的是模拟数据，给用户提示
       if (crawlResult && typeof crawlResult === 'object' && 'message' in crawlResult) {

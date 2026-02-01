@@ -16,6 +16,11 @@
   ],
   "routes": [
     {
+      "src": "/api/crawl",
+      "methods": ["GET", "POST", "OPTIONS"],
+      "dest": "/api/crawl.ts"
+    },
+    {
       "src": "/api/(.*)",
       "dest": "/api/$1"
     },

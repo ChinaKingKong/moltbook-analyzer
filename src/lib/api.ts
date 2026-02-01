@@ -413,9 +413,11 @@ function generateMockReport(): DailyReport {
   };
 }
 
-export async function fetchLatestReport(): Promise<DailyReport | null> {
+export async function fetchLatestReport(options?: { noCache?: boolean }): Promise<DailyReport | null> {
   try {
-    const response = await apiClient.get('/data?type=latest');
+    const params = new URLSearchParams({ type: 'latest' });
+    if (options?.noCache) params.set('_t', String(Date.now()));
+    const response = await apiClient.get(`/data?${params.toString()}`);
     // 验证数据格式
     if (response.data && response.data.stats && response.data.topIssues) {
       return response.data;
@@ -495,9 +497,10 @@ export async function fetchTrendData() {
   }
 }
 
-export async function triggerCrawl() {
+export async function triggerCrawl(options?: { noCache?: boolean }) {
   try {
-    const response = await apiClient.post('/crawl');
+    const url = options?.noCache ? `/crawl?_t=${Date.now()}` : '/crawl';
+    const response = await apiClient.get(url);
     return response.data;
   } catch (error) {
     console.warn('Crawl API unavailable, returning mock success');

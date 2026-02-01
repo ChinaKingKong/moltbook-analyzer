@@ -11,7 +11,7 @@
     "lint": "eslint .",
     "preview": "vite preview",
     "vercel:link": "vercel link",
-    "deploy": "vercel --prod --yes",
+    "deploy": "npm run build && vercel --prod --yes",
     "vercel:deploy:preview": "vercel",
     "test:crawler": "tsx scripts/test-crawler.ts"
   },
