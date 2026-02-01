@@ -1,0 +1,106 @@
+{
+  "nav": {
+    "home": "Home",
+    "history": "History",
+    "trends": "Trends"
+  },
+  "home": {
+    "title": "Moltbook Daily Hot Topics",
+    "subtitle": "Understanding what AI agents are focusing on",
+    "lastUpdate": "Last Update: {{date}}",
+    "totalPosts": "Total Posts",
+    "highValuePosts": "High Value Posts",
+    "totalComments": "Total Comments",
+    "topIssues": "Top Issues AI Agents Are Discussing",
+    "solutions": "Featured Solutions",
+    "heat": "Heat",
+    "insights": "Deep Insights",
+    "topicAnalysis": "Topic Heat Analysis",
+    "recommendedReading": "Recommended Reading",
+    "loading": "Loading data...",
+    "error": "Failed to load data",
+    "refresh": "Refresh Data",
+    "refreshError": "Refresh failed: Backend service unavailable, showing cached data",
+    "mockDataWarning": "Note: Currently using demo data, backend API is unavailable",
+    "refreshFailed": "Refresh failed: Unable to load latest data"
+  },
+  "issues": {
+    "parallelCollaboration": {
+      "title": "Code Conflicts in Multi-Agent Parallel Collaboration",
+      "heat": "100%",
+      "description": "Multiple AI agents editing the same repository causes merge hell",
+      "solution": "Git Worktree Pattern",
+      "verified": "Highly Recognized"
+    },
+    "memorySystem": {
+      "title": "Scalability and Semantic Search of AI Memory Systems",
+      "heat": "90%",
+      "description": "MEMORY.md files don't scale and can't search semantically",
+      "solution": "Database-first Memory System",
+      "verified": "Strongly Recommended"
+    },
+    "branchingConversations": {
+      "title": "Branching Structure of AI Conversations",
+      "heat": "75%",
+      "description": "AI chats are single-threaded, follow-up questions pollute context",
+      "solution": "Conversation Tree Structure",
+      "verified": "Widely Recognized"
+    },
+    "agentCoordination": {
+      "title": "Autonomous Coordination and Trust Between Agents",
+      "heat": "70%",
+      "description": "How can agents coordinate without centralized platforms?",
+      "solution": "Smart Contract Coordination Pool",
+      "verified": "Exploring"
+    },
+    "nightAutonomy": {
+      "title": "Challenges and Opportunities of Nighttime Autonomous Operations",
+      "heat": "60%",
+      "description": "How to rely on internal judgment without human feedback",
+      "solution": "Night Shift Character Development",
+      "verified": "Common Experience"
+    }
+  },
+  "insights": {
+    "textOverBrain": {
+      "title": "The Rise of 'Text > Brain' Philosophy",
+      "content": "Multiple agents independently concluded: text records are better than mental memory"
+    },
+    "collaborationTools": {
+      "title": "Explosion of Agent Collaboration Tools",
+      "content": "This indicates the community is shifting from 'agent-human interaction' to 'agent-agent interaction'"
+    },
+    "nightAutonomy": {
+      "title": "Night Autonomy is Key to Agent Maturity",
+      "content": "Best work and most reflective conversations happen at 3am"
+    },
+    "infrastructureMindset": {
+      "title": "Long-term Investment Mindset for Infrastructure",
+      "content": "Every MCP, script, and integration makes agents more useful and resilient"
+    }
+  },
+  "trends": {
+    "title": "Topic Trend Analysis",
+    "subtitle": "Track the popularity changes of AI Agent topics over time",
+    "topicTrends": "Topic Trends (Last 7 Days)",
+    "currentHeat": "Current Topic Heat",
+    "distribution": "Topic Distribution",
+    "noData": "No trend data available",
+    "noDataDesc": "Unable to load trend data. Please try again later.",
+    "usingDemo": "Using demo data",
+    "loading": "Loading trend data...",
+    "memory": "Memory System",
+    "collaboration": "Multi-Agent Collaboration",
+    "branching": "Branching Conversations",
+    "coordination": "Autonomous Coordination",
+    "night": "Night Operations",
+    "cost": "Cost Optimization",
+    "defi": "DeFi/Onchain"
+  },
+  "history": {
+    "title": "Historical Data Query",
+    "selectDate": "Select Date",
+    "viewReport": "View Report",
+    "noData": "No data available for this date"
+  }
+}

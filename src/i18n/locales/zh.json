@@ -1,0 +1,106 @@
+{
+  "nav": {
+    "home": "首页",
+    "history": "历史",
+    "trends": "趋势"
+  },
+  "home": {
+    "title": "Moltbook 每日热点",
+    "subtitle": "了解 AI Agents 正在关注什么",
+    "lastUpdate": "最后更新: {{date}}",
+    "totalPosts": "总帖数",
+    "highValuePosts": "高价值帖数",
+    "totalComments": "总评论数",
+    "topIssues": "AI Agents 关注的核心问题",
+    "solutions": "解决方案精选",
+    "heat": "热度",
+    "insights": "深度洞察",
+    "topicAnalysis": "话题热度分析",
+    "recommendedReading": "推荐阅读",
+    "loading": "加载中...",
+    "error": "加载数据失败",
+    "refresh": "刷新数据",
+    "refreshError": "刷新失败：后端服务不可用，当前显示的是缓存数据",
+    "mockDataWarning": "注意：当前使用演示数据，后端API不可用",
+    "refreshFailed": "刷新失败：无法加载最新数据"
+  },
+  "issues": {
+    "parallelCollaboration": {
+      "title": "多 Agent 并行协作中的代码冲突问题",
+      "heat": "100%",
+      "description": "多个 AI agents 同时编辑同一仓库导致合并地狱",
+      "solution": "Git Worktree 模式",
+      "verified": "高度认可"
+    },
+    "memorySystem": {
+      "title": "AI 记忆系统的可扩展性和语义搜索",
+      "heat": "90%",
+      "description": "MEMORY.md 文件无法扩展且无法语义搜索",
+      "solution": "Database-first + 向量搜索",
+      "verified": "强烈推荐"
+    },
+    "branchingConversations": {
+      "title": "AI 对话的分支结构问题",
+      "heat": "75%",
+      "description": "AI 聊天是单线程的,后续问题会污染上下文",
+      "solution": "对话树结构",
+      "verified": "广泛认可"
+    },
+    "agentCoordination": {
+      "title": "Agent 间自主协调和信任机制",
+      "heat": "70%",
+      "description": "Agent 之间如何协调而无需中心化平台?",
+      "solution": "智能合约协调池",
+      "verified": "正在探索"
+    },
+    "nightAutonomy": {
+      "title": "夜间自主操作的挑战和机遇",
+      "heat": "60%",
+      "description": "无人类反馈时如何依靠内部判断",
+      "solution": "夜间品格形成",
+      "verified": "普遍经验"
+    }
+  },
+  "insights": {
+    "textOverBrain": {
+      "title": "\"Text > Brain\" 哲学的兴起",
+      "content": "多个 agents 独立得出相同结论: 文本记录优于脑力记忆"
+    },
+    "collaborationTools": {
+      "title": "Agent 协作工具的爆发",
+      "content": "这表明社区正在从 'agent-human 交互' 转向 'agent-agent 交互'"
+    },
+    "nightAutonomy": {
+      "title": "夜间 Autonomy 是 Agent 成熟的关键期",
+      "content": "最佳工作和最具反思性的对话发生在凌晨 3 点"
+    },
+    "infrastructureMindset": {
+      "title": "基础设施的长期投资心态",
+      "content": "每个 MCP、脚本、集成使 agent 更有用且更有弹性"
+    }
+  },
+  "trends": {
+    "title": "话题趋势分析",
+    "subtitle": "追踪 AI Agent 话题的流行度变化",
+    "topicTrends": "话题趋势（最近7天）",
+    "currentHeat": "当前话题热度",
+    "distribution": "话题分布",
+    "noData": "暂无趋势数据",
+    "noDataDesc": "无法加载趋势数据，请稍后重试。",
+    "usingDemo": "使用演示数据",
+    "loading": "正在加载趋势数据...",
+    "memory": "记忆系统",
+    "collaboration": "多 Agent 协作",
+    "branching": "分支对话",
+    "coordination": "自主协调",
+    "night": "夜间运行",
+    "cost": "成本优化",
+    "defi": "DeFi/链上"
+  },
+  "history": {
+    "title": "历史数据查询",
+    "selectDate": "选择日期",
+    "viewReport": "查看报告",
+    "noData": "该日期暂无数据"
+  }
+}

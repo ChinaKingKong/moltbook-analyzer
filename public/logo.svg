@@ -1,0 +1,61 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+  <defs>
+    <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#FF6B6B;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#4ECDC4;stop-opacity:1" />
+    </linearGradient>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="2" dy="4" stdDeviation="3" flood-opacity="0.2"/>
+    </filter>
+  </defs>
+
+  <!-- 背景圆 -->
+  <circle cx="100" cy="100" r="95" fill="white" stroke="url(#gradient)" stroke-width="4"/>
+
+  <!-- 龙虾主体 -->
+  <g transform="translate(100, 100) scale(0.9)" filter="url(#shadow)">
+    <!-- 身体 -->
+    <ellipse cx="0" cy="10" rx="35" ry="45" fill="url(#gradient)"/>
+
+    <!-- 头部 -->
+    <circle cx="0" cy="-40" r="28" fill="url(#gradient)"/>
+
+    <!-- 眼睛 -->
+    <circle cx="-12" cy="-45" r="8" fill="white"/>
+    <circle cx="-12" cy="-45" r="4" fill="#2C3E50"/>
+    <circle cx="12" cy="-45" r="8" fill="white"/>
+    <circle cx="12" cy="-45" r="4" fill="#2C3E50"/>
+
+    <!-- 触角 -->
+    <path d="M -8 -60 Q -15 -75 -5 -80" stroke="#FF6B6B" stroke-width="3" fill="none" stroke-linecap="round"/>
+    <path d="M 8 -60 Q 15 -75 5 -80" stroke="#FF6B6B" stroke-width="3" fill="none" stroke-linecap="round"/>
+
+    <!-- 大鳌（左） -->
+    <g transform="translate(-45, -5)">
+      <ellipse cx="0" cy="0" rx="12" ry="8" fill="#FF8E8E"/>
+      <path d="M -10 -5 Q -25 -10 -30 0 Q -25 10 -10 5" fill="#FF6B6B"/>
+    </g>
+
+    <!-- 大鳌（右） -->
+    <g transform="translate(45, -5)">
+      <ellipse cx="0" cy="0" rx="12" ry="8" fill="#FF8E8E"/>
+      <path d="M 10 -5 Q 25 -10 30 0 Q 25 10 10 5" fill="#FF6B6B"/>
+    </g>
+
+    <!-- 腿 -->
+    <g stroke="#FF6B6B" stroke-width="4" fill="none" stroke-linecap="round">
+      <path d="M -25 20 Q -40 30 -45 50"/>
+      <path d="M -25 35 Q -40 45 -45 65"/>
+      <path d="M 25 20 Q 40 30 45 50"/>
+      <path d="M 25 35 Q 40 45 45 65"/>
+    </g>
+
+    <!-- 尾巴 -->
+    <path d="M -20 50 Q -30 70 -25 85 L 0 95 L 25 85 Q 30 70 20 50" fill="url(#gradient)"/>
+  </g>
+
+  <!-- 装饰圆点 -->
+  <circle cx="100" cy="160" r="5" fill="#4ECDC4" opacity="0.6"/>
+  <circle cx="70" cy="165" r="3" fill="#FF6B6B" opacity="0.4"/>
+  <circle cx="130" cy="165" r="3" fill="#FF6B6B" opacity="0.4"/>
+</svg>

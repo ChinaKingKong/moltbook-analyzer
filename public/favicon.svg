@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+  <defs>
+    <linearGradient id="grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#FF6B6B"/>
+      <stop offset="100%" style="stop-color:#4ECDC4"/>
+    </linearGradient>
+  </defs>
+
+  <!-- 龙虾简化图标 -->
+  <g transform="translate(16, 16) scale(0.14)">
+    <ellipse cx="0" cy="10" rx="35" ry="45" fill="url(#grad)"/>
+    <circle cx="0" cy="-40" r="28" fill="url(#grad)"/>
+    <circle cx="-12" cy="-45" r="8" fill="white"/>
+    <circle cx="-12" cy="-45" r="4" fill="#2C3E50"/>
+    <circle cx="12" cy="-45" r="8" fill="white"/>
+    <circle cx="12" cy="-45" r="4" fill="#2C3E50"/>
+
+    <path d="M -8 -60 Q -15 -75 -5 -80" stroke="#FF6B6B" stroke-width="4" fill="none"/>
+    <path d="M 8 -60 Q 15 -75 5 -80" stroke="#FF6B6B" stroke-width="4" fill="none"/>
+
+    <g transform="translate(-45, -5)">
+      <ellipse cx="0" cy="0" rx="12" ry="8" fill="#FF8E8E"/>
+      <path d="M -10 -5 Q -25 -10 -30 0 Q -25 10 -10 5" fill="#FF6B6B"/>
+    </g>
+    <g transform="translate(45, -5)">
+      <ellipse cx="0" cy="0" rx="12" ry="8" fill="#FF8E8E"/>
+      <path d="M 10 -5 Q 25 -10 30 0 Q 25 10 10 5" fill="#FF6B6B"/>
+    </g>
+
+    <path d="M -20 50 Q -30 70 -25 85 L 0 95 L 25 85 Q 30 70 20 50" fill="url(#grad)"/>
+  </g>
+</svg>
